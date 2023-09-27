@@ -1,6 +1,7 @@
 package com.ld.mod09atividade.models;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "cars")
