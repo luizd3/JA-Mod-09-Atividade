@@ -28,32 +28,19 @@ public class CarService {
         return this.carRepository.findOneById(id);
     }
 
-    public CompletableFuture<Car> saveAsync(Car car) throws ExecutionException, InterruptedException {
+    public CompletableFuture<Car> save(Car car) throws ExecutionException, InterruptedException {
         System.out.println("Service thread: " + Thread.currentThread().getName());
-//        CompletableFuture<Car> futureCar = new CompletableFuture<>();
-//        futureCar.complete(saveCar(car));
-//        return futureCar;
-//        return CompletableFuture.runAsync(() -> carRepository.save(car));
         return CompletableFuture.completedFuture(this.carRepository.save(car));
-    }
-
-    private Car saveCar(Car car) {
-        return this.carRepository.save(car);
     }
 
     public CompletableFuture<Car> update(Car carUpdate) {
         System.out.println("Service thread: " + Thread.currentThread().getName());
-        Car carToUpdate = carRepository.findAll().stream()
-                .filter(car -> car.getId().equals(carUpdate.getId()))
-                .findFirst().get();
-        carToUpdate.setBrand(carUpdate.getBrand());
-        carToUpdate.setReleaseYear(carUpdate.getReleaseYear());
-        return CompletableFuture.supplyAsync(() -> carRepository.save(carToUpdate));
+        return CompletableFuture.supplyAsync(() -> carRepository.save(carUpdate));
     }
 
-//    public CompletableFuture delete(Long id) {
-//        System.out.println("Service thread: " + Thread.currentThread().getName());
-//        return CompletableFuture.runAsync(carRepository.deleteById(id));
-//    }
+    public CompletableFuture<Void> delete(Long id) {
+        System.out.println("Service thread: " + Thread.currentThread().getName());
+        return CompletableFuture.runAsync(() -> carRepository.deleteById(id));
+    }
 
 }
