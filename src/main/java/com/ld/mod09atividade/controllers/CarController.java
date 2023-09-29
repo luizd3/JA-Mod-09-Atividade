@@ -37,19 +37,16 @@ public class CarController {
     }
 
     @PostMapping
-    public CompletableFuture<ResponseEntity<String>> save(@RequestBody final Car car) throws ExecutionException, InterruptedException {
+    public CompletableFuture<Car> save(@RequestBody final Car car) {
         System.out.println("Controller Thread POST: " + Thread.currentThread().getName());
-        this.carService.save(car);
-        String message = "Car saved successfully.";
-        return CompletableFuture.completedFuture(new ResponseEntity<>(message, HttpStatus.CREATED));
+        CompletableFuture<Car> savedCar = this.carService.save(car);
+        return savedCar;
     }
 
     @PutMapping
-    public CompletableFuture<ResponseEntity<String>> update(@RequestBody final Car car) {
+    public CompletableFuture<Car> update(@RequestBody final Car car) {
         System.out.println("Controller Thread PUT: " + Thread.currentThread().getName());
-        this.carService.update(car);
-        String message = "Car updated successfully.";
-        return CompletableFuture.completedFuture(new ResponseEntity<>(message, HttpStatus.OK));
+        return this.carService.update(car);
     }
 
     @DeleteMapping("/{id}")

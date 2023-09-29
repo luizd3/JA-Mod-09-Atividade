@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 @Async("executorService")
 @Service
@@ -28,9 +27,9 @@ public class CarService {
         return this.carRepository.findOneById(id);
     }
 
-    public CompletableFuture<Car> save(Car car) throws ExecutionException, InterruptedException {
+    public CompletableFuture<Car> save(Car car) {
         System.out.println("Service thread: " + Thread.currentThread().getName());
-        return CompletableFuture.completedFuture(this.carRepository.save(car));
+        return CompletableFuture.completedFuture(this.carRepository.saveAndFlush(car));
     }
 
     public CompletableFuture<Car> update(Car carUpdate) {
